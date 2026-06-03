@@ -1,18 +1,20 @@
 package com.example.smarthealthmonitor
-
 import android.content.res.Configuration
 import android.os.Bundle
-
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-
+import androidx.compose.ui.unit.dp
 import com.example.smarthealthmonitor.navigation.SmartHealthNavGraph
-import com.example.smarthealthmonitor.ui.theme.SmartHealthMonitorTheme
-
+import com.example.smarthealthmonitor.SmartHealthMonitorTheme
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,33 +25,63 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            SmartHealthMonitorTheme {
-
-                // Ahora NavGraph controla toda la navegación
-                SmartHealthNavGraph()
-            }
+            // Punto de entrada principal
+            SmartHealthNavGraph()
         }
     }
 }
 
+@Composable
+fun Greeting(
+    name: String,
+    modifier: Modifier = Modifier
+) {
+
+    Text(
+        text = "Hello $name!",
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+
+    SmartHealthMonitorTheme {
+
+        Greeting("Android")
+    }
+}
+
 @Preview(
-    name = "App Preview",
     showBackground = true,
-    showSystemUi = true,
-    device = "id:pixel_6"
+    name = "Light"
 )
 
 @Preview(
-    name = "App Preview Dark",
     showBackground = true,
+    name = "Dark",
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 
 @Composable
-private fun AppPreview() {
+fun ThemePreview() {
 
     SmartHealthMonitorTheme {
 
-        SmartHealthNavGraph()
+        Surface(
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+            Text(
+                text = "SmartHealth Monitor",
+
+                style = MaterialTheme.typography.headlineMedium,
+
+                color = MaterialTheme.colorScheme.primary,
+
+                modifier = Modifier.padding(24.dp)
+            )
+        }
     }
 }

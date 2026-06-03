@@ -1,5 +1,4 @@
 package com.example.smarthealthmonitor.data.models
-
 data class LecturaFC(
     val id: Int,
     val valorBpm: Int,
@@ -7,7 +6,7 @@ data class LecturaFC(
     val esNormal: Boolean = valorBpm in 60..100
 )
 
-// Datos de prueba
+// Datos de prueba para desarrollo (mock data)
 object MockData {
 
     val historialFC = listOf(

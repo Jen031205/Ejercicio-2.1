@@ -1,33 +1,49 @@
-package com.example.smarthealthmonitor.ui.screens
-
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.*
+package com.example.smarthealthmonitor
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.smarthealthmonitor.data.models.LecturaFC
-import com.example.smarthealthmonitor.data.models.MockData
-import com.example.smarthealthmonitor.ui.components.FilaHistorial
-import com.example.smarthealthmonitor.ui.components.TarjetaDato
-import com.example.smarthealthmonitor.ui.theme.SmartHealthMonitorTheme
-
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.smarthealthmonitor.FilaHistorial
+import com.example.smarthealthmonitor.TarjetaDato
+import com.example.smarthealthmonitor.SmartHealthMonitorTheme
+import com.example.smarthealthmonitor.viewmodel.DashboardViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     onHistorialClick: () -> Unit = {},
     onAlertClick: () -> Unit = {},
-
-    fc: Int = MockData.fcActual,
-    pasos: Int = MockData.pasosActual,
-    historial: List<LecturaFC> = MockData.historialFC
+    viewModel: DashboardViewModel = viewModel()
 ) {
+
+    // StateFlow → Compose State
+    val fc by viewModel.fc.collectAsState()
+
+    val pasos by viewModel.pasos.collectAsState()
+
+    val historial = viewModel.historial
 
     SmartHealthMonitorTheme {
 
@@ -61,7 +77,7 @@ fun DashboardScreen(
 
                     Icon(
                         imageVector = Icons.Default.Warning,
-                        contentDescription = "Enviar alerta",
+                        contentDescription = "Enviar alerta de emergencia",
                         tint = MaterialTheme.colorScheme.onError
                     )
                 }
@@ -78,8 +94,10 @@ fun DashboardScreen(
                 contentPadding = PaddingValues(16.dp),
 
                 verticalArrangement = Arrangement.spacedBy(12.dp)
+
             ) {
 
+                // Tarjeta FC
                 item {
 
                     TarjetaDato(
@@ -90,6 +108,7 @@ fun DashboardScreen(
                     )
                 }
 
+                // Tarjeta Pasos
                 item {
 
                     TarjetaDato(
@@ -100,6 +119,7 @@ fun DashboardScreen(
                     )
                 }
 
+                // Encabezado historial
                 item {
 
                     Row(
@@ -124,6 +144,7 @@ fun DashboardScreen(
                     }
                 }
 
+                // Lista historial
                 items(
                     historial,
                     key = { it.id }
@@ -140,19 +161,19 @@ fun DashboardScreen(
 
 @Preview(
     showBackground = true,
-    name = "Dashboard Light",
+    name = "Dashboard - Light",
     showSystemUi = true,
     device = "id:pixel_6"
 )
 
 @Preview(
     showBackground = true,
-    name = "Dashboard Dark",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
+    name = "Dashboard - Dark",
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
 )
 
 @Composable
-fun DashboardScreenPreview() {
+private fun DashboardScreenPreview() {
 
     SmartHealthMonitorTheme {
 

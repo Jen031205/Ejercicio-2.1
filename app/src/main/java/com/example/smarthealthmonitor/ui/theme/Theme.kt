@@ -1,6 +1,4 @@
-package com.example.smarthealthmonitor.ui.theme
-
-import android.app.Activity
+package com.example.smarthealthmonitor
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -11,35 +9,78 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
+private val DarkColorScheme = darkColorScheme(
+    primary = primaryDark,
+    onPrimary = onPrimaryDark,
+    primaryContainer = primaryContainerDark,
+    onPrimaryContainer = onPrimaryContainerDark,
+
+    secondary = secondaryDark,
+    onSecondary = onSecondaryDark,
+    secondaryContainer = secondaryContainerDark,
+    onSecondaryContainer = onSecondaryContainerDark,
+
+    tertiary = tertiaryDark,
+    onTertiary = onTertiaryDark,
+    tertiaryContainer = tertiaryContainerDark,
+    onTertiaryContainer = onTertiaryContainerDark,
+
+    background = backgroundDark,
+    onBackground = onBackgroundDark,
+
+    surface = surfaceDark,
+    onSurface = onSurfaceDark,
+
+    error = errorDark,
+    onError = onErrorDark
+)
 
 private val LightColorScheme = lightColorScheme(
-    primary = SHPrimary,
-    onPrimary = SHOnPrimary,
-    primaryContainer = SHPrimaryContainer,
-    secondary = SHSecondary,
-    error = SHError,
-    background = SHBackground,
-    surface = SHSurface,
-    onSurface = SHOnSurface,
-)
+    primary = primaryLight,
+    onPrimary = onPrimaryLight,
+    primaryContainer = primaryContainerLight,
+    onPrimaryContainer = onPrimaryContainerLight,
 
-private val DarkColorScheme = darkColorScheme(
-    primary = SHPrimaryDark,
-    onPrimary = SHOnPrimaryDark,
-    background = SHBackgroundDark,
-    surface = SHSurfaceDark,
-)
+    secondary = secondaryLight,
+    onSecondary = onSecondaryLight,
+    secondaryContainer = secondaryContainerLight,
+    onSecondaryContainer = onSecondaryContainerLight,
 
+    tertiary = tertiaryLight,
+    onTertiary = onTertiaryLight,
+    tertiaryContainer = tertiaryContainerLight,
+    onTertiaryContainer = onTertiaryContainerLight,
+
+    background = backgroundLight,
+    onBackground = onBackgroundLight,
+
+    surface = surfaceLight,
+    onSurface = onSurfaceLight,
+
+    error = errorLight,
+    onError = onErrorLight
+)
 
 @Composable
 fun SmartHealthMonitorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
 
-    val colorScheme =
-        if (darkTheme) DarkColorScheme
-        else LightColorScheme
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+
+            if (darkTheme)
+                dynamicDarkColorScheme(context)
+            else
+                dynamicLightColorScheme(context)
+        }
+
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
 
     MaterialTheme(
         colorScheme = colorScheme,

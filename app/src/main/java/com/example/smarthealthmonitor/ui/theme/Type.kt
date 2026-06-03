@@ -1,5 +1,4 @@
-package com.example.smarthealthmonitor.ui.theme
-
+package com.example.smarthealthmonitor
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily

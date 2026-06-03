@@ -1,23 +1,13 @@
 package com.example.smarthealthmonitor.navigation
 
-sealed class Screen(
 
-    val route: String
-) {
+sealed class Screen(val route: String) {
 
-    data object Login : Screen(
-        "login"
-    )
+    object Login : Screen("login")
 
-    data object Dashboard : Screen(
-        "dashboard"
-    )
+    object Dashboard : Screen("dashboard")
 
-    data object Historial : Screen(
-        "historial"
-    )
+    object Historial : Screen("historial")
 
-    data object Alerta : Screen(
-        "alerta"
-    )
+    object Alerta : Screen("alerta")
 }
