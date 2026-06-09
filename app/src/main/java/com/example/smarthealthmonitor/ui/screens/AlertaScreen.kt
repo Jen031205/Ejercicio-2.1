@@ -3,6 +3,7 @@ package com.example.smarthealthmonitor.ui.screens
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -12,24 +13,23 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.smarthealthmonitor.SmartHealthMonitorTheme
+
 @Composable
 fun AlertaScreen(
     fc: Int,
     onDismiss: () -> Unit,
-    onConfirmar: () -> Unit
+    onConfirmar: (String) -> Unit
 ) {
     var enviando by remember { mutableStateOf(false) }
+    var nota by remember { mutableStateOf("") }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -54,6 +54,7 @@ fun AlertaScreen(
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+
                 Text(
                     text = "FC actual: $fc bpm",
                     style = MaterialTheme.typography.titleLarge,
@@ -61,9 +62,20 @@ fun AlertaScreen(
                 )
 
                 Text(
-                    text =
-                        "Se notificará a tus contactos de emergencia.\n" +
-                                "Esta acción no se puede deshacer."
+                    text = "Se notificará a tus contactos de emergencia.\n" +
+                            "Esta acción no se puede deshacer."
+                )
+
+                OutlinedTextField(
+                    value = nota,
+                    onValueChange = { nota = it },
+                    label = {
+                        Text("Nota opcional")
+                    },
+                    placeholder = {
+                        Text("Me siento mareado")
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         },
@@ -72,7 +84,7 @@ fun AlertaScreen(
             Button(
                 onClick = {
                     enviando = true
-                    onConfirmar()
+                    onConfirmar(nota)
                 },
                 enabled = !enviando,
                 colors = ButtonDefaults.buttonColors(
@@ -89,7 +101,7 @@ fun AlertaScreen(
                     )
                 } else {
                     Text(
-                        text = "CONFIRMAR ALERTA",
+                        "CONFIRMAR ALERTA",
                         style = MaterialTheme.typography.labelLarge
                     )
                 }
@@ -121,7 +133,7 @@ private fun AlertaScreenPreview() {
         AlertaScreen(
             fc = 145,
             onDismiss = {},
-            onConfirmar = {}
+            onConfirmar = { _ -> }
         )
     }
 }
