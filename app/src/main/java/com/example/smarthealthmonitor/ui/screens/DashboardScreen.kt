@@ -1,4 +1,5 @@
 package com.example.smarthealthmonitor
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,9 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -21,33 +25,92 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.smarthealthmonitor.FilaHistorial
-import com.example.smarthealthmonitor.TarjetaDato
-import com.example.smarthealthmonitor.SmartHealthMonitorTheme
+import com.example.smarthealthmonitor.ui.screens.AlertaScreen
 import com.example.smarthealthmonitor.viewmodel.DashboardViewModel
+import kotlinx.coroutines.launch
+import androidx.compose.material3.SnackbarResult
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     onHistorialClick: () -> Unit = {},
-    onAlertClick: () -> Unit = {},
     viewModel: DashboardViewModel = viewModel()
 ) {
 
-    // StateFlow → Compose State
     val fc by viewModel.fc.collectAsState()
-
     val pasos by viewModel.pasos.collectAsState()
+    val historial by viewModel.historial.collectAsState()
 
-    val historial = viewModel.historial
+    // Estado del diálogo
+    var mostrarAlerta by remember { mutableStateOf(false) }
+
+    // Estado del Snackbar
+    val snackbarHost = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    // Mostrar diálogo
+    if (mostrarAlerta) {
+
+        AlertaScreen(
+
+            fc = fc,
+
+            onDismiss = {
+                mostrarAlerta = false
+            },
+
+            onConfirmar = { nota ->
+
+                mostrarAlerta = false
+
+                scope.launch {
+
+                    val resultado = snackbarHost.showSnackbar(
+
+                        message = "✅ Alerta enviada a tus contactos de emergencia",
+
+                        actionLabel = "Deshacer",
+
+                        duration = SnackbarDuration.Long
+                    )
+
+                    when (resultado) {
+
+                        SnackbarResult.ActionPerformed -> {
+
+                            snackbarHost.showSnackbar(
+
+                                message = "⚠️ Alerta cancelada",
+
+                                duration = SnackbarDuration.Short
+                            )
+                        }
+
+                        SnackbarResult.Dismissed -> {
+                            // No hacer nada
+                        }
+                    }
+                }
+            }
+        )
+    }
 
     SmartHealthMonitorTheme {
 
         Scaffold(
+
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHost)
+            },
 
             topBar = {
 
@@ -71,13 +134,22 @@ fun DashboardScreen(
             floatingActionButton = {
 
                 FloatingActionButton(
-                    onClick = onAlertClick,
+
+                    onClick = {
+                        mostrarAlerta = true
+                    },
+
                     containerColor = MaterialTheme.colorScheme.error
+
                 ) {
 
                     Icon(
+
                         imageVector = Icons.Default.Warning,
-                        contentDescription = "Enviar alerta de emergencia",
+
+                        contentDescription =
+                            "Enviar alerta de emergencia",
+
                         tint = MaterialTheme.colorScheme.onError
                     )
                 }
@@ -97,42 +169,53 @@ fun DashboardScreen(
 
             ) {
 
-                // Tarjeta FC
                 item {
 
                     TarjetaDato(
+
                         valor = "$fc",
+
                         unidad = "bpm",
+
                         label = "Frecuencia cardíaca",
+
                         colorValor = MaterialTheme.colorScheme.error
                     )
                 }
 
-                // Tarjeta Pasos
                 item {
 
                     TarjetaDato(
+
                         valor = "%,d".format(pasos),
+
                         unidad = "pasos",
+
                         label = "Pasos del día",
+
                         colorValor = MaterialTheme.colorScheme.primary
                     )
                 }
 
-                // Encabezado historial
                 item {
 
                     Row(
+
                         modifier = Modifier.fillMaxWidth(),
 
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement =
+                            Arrangement.SpaceBetween,
 
                         verticalAlignment = Alignment.CenterVertically
+
                     ) {
 
                         Text(
+
                             text = "Historial reciente",
-                            style = MaterialTheme.typography.titleMedium
+
+                            style =
+                                MaterialTheme.typography.titleMedium
                         )
 
                         TextButton(
@@ -144,9 +227,8 @@ fun DashboardScreen(
                     }
                 }
 
-                // Lista historial
                 items(
-                    historial,
+                    items = historial,
                     key = { it.id }
                 ) { lectura ->
 
@@ -165,13 +247,11 @@ fun DashboardScreen(
     showSystemUi = true,
     device = "id:pixel_6"
 )
-
 @Preview(
     showBackground = true,
     name = "Dashboard - Dark",
     uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
 )
-
 @Composable
 private fun DashboardScreenPreview() {
 
