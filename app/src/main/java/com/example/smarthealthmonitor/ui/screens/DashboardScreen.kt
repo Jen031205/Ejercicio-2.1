@@ -37,6 +37,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.smarthealthmonitor.ui.screens.AlertaScreen
 import com.example.smarthealthmonitor.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.material3.SnackbarResult
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,17 +74,32 @@ fun DashboardScreen(
 
                 scope.launch {
 
-                    snackbarHost.showSnackbar(
+                    val resultado = snackbarHost.showSnackbar(
 
-                        message =
-                            "✅ Alerta enviada a tus contactos de emergencia",
+                        message = "✅ Alerta enviada a tus contactos de emergencia",
+
+                        actionLabel = "Deshacer",
 
                         duration = SnackbarDuration.Long
                     )
-                }
 
-                // Si después ocupas la nota:
-                // println(nota)
+                    when (resultado) {
+
+                        SnackbarResult.ActionPerformed -> {
+
+                            snackbarHost.showSnackbar(
+
+                                message = "⚠️ Alerta cancelada",
+
+                                duration = SnackbarDuration.Short
+                            )
+                        }
+
+                        SnackbarResult.Dismissed -> {
+                            // No hacer nada
+                        }
+                    }
+                }
             }
         )
     }
