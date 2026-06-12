@@ -1,4 +1,4 @@
-package com.example.smarthealthmonitor.wear.presentation.theme
+package com.example.smarthealthmonitor.wear.presentation.sampledata.theme
 
 import androidx.compose.runtime.Composable
 import androidx.wear.compose.material3.MaterialTheme
