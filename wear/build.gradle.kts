@@ -63,4 +63,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.7.3")
 // nuevoo
 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+    implementation("androidx.wear.compose:compose-navigation:1.4.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+
 }
