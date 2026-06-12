@@ -45,7 +45,9 @@ class MainActivity : ComponentActivity() {
        }
 
         setContent {
-        WearApp("Android")
+            SmartHealthMonitorTheme {
+                SmartHealthWearNavGraph()
+            }
         }
     }
 }

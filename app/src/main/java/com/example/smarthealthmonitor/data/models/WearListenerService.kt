@@ -1,9 +1,16 @@
-package com.example.smarthealthmonitor
+package com.example.smarthealthmonitor.data.models
+
 import android.util.Log
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.WearableListenerService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WearListenerService : WearableListenerService() {
+
+    private val scope =
+        CoroutineScope(Dispatchers.IO)
 
     companion object {
 
@@ -33,7 +40,10 @@ class WearListenerService : WearableListenerService() {
 
                 val bpm = data.toIntOrNull() ?: return
 
-                SmartHealthRepository.actualizarFC(bpm)
+                scope.launch {
+
+                    SmartHealthRepository.actualizarFC(bpm)
+                }
             }
 
             PATH_PASOS -> {
