@@ -4,18 +4,32 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 
 class WearDashboardViewModel : ViewModel() {
 
-    // TEMPORAL
-    // Después lo conectaremos al Repository real
     val fc: StateFlow<Int> =
-        kotlinx.coroutines.flow.flowOf(72)
+        flowOf(72)
             .stateIn(
                 viewModelScope,
-                SharingStarted.WhileSubscribed(5_000),
+                SharingStarted.WhileSubscribed(5000),
                 72
             )
+
+    // Historial temporal para S10
+    val historial: StateFlow<List<Int>> =
+        flowOf(
+            listOf(
+                72,
+                84,
+                110,
+                95,
+                78
+            )
+        ).stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            emptyList()
+        )
 }
