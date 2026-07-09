@@ -13,12 +13,12 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="wear">
+      <SelectionState runConfigName="tv">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-06-07T15:31:03.774776300Z">
+        <DropdownSelection timestamp="2026-07-09T04:55:37.640708200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\User\.android\avd\Wear_OS_Rectangular_API_34.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\User\.android\avd\Television_720p.avd" />
             </handle>
           </Target>
         </DropdownSelection>
