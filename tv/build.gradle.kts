@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "mx.utng.smarthealthmonitor.tv"
-        minSdk = 30
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -38,8 +38,8 @@ android {
 }
 
 dependencies {
-    // Compose for TV — reemplaza Leanback Library
-    implementation("androidx.tv:tv-foundation:1.0.0")
+    // Compose for TV - Combinación compatible
+    implementation("androidx.tv:tv-foundation:1.0.0-alpha11")
     implementation("androidx.tv:tv-material:1.0.0")
      
     // Compose base
@@ -47,9 +47,11 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material3:material3")
+    
     implementation("androidx.navigation:navigation-compose:2.8.5")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
 }
