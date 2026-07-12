@@ -3,8 +3,15 @@ package mx.utng.smarthealthmonitor.tv
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.tv.material3.MaterialTheme
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import mx.utng.smarthealthmonitor.tv.presentation.TvCatalogScreen
+import mx.utng.smarthealthmonitor.tv.presentation.TvDetailScreen
+import mx.utng.smarthealthmonitor.tv.presentation.TvPlaybackScreen
+import mx.utng.smarthealthmonitor.tv.ui.theme.SmartHealthTvTheme
 
 class TVActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,13 +27,13 @@ class TVActivity : ComponentActivity() {
                     }
                     composable(
                         route = "detail/{lecturaId}",
-                        arguments = listOf(navArgument("lecturaId") { type=NavType.IntType })
+                        arguments = listOf(navArgument("lecturaId") { type = NavType.IntType })
                     ) { backStack ->
                         val id = backStack.arguments?.getInt("lecturaId") ?: return@composable
-                        TvDetailScreen(lecturaId=id, navController=navController)
+                        TvDetailScreen(lecturaId = id, navController = navController)
                     }
                     composable("playback") {
-                        TvPlaybackScreen(navController=navController)
+                        TvPlaybackScreen(navController = navController)
                     }
                 }
             }
