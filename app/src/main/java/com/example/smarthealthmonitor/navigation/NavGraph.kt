@@ -19,7 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.smarthealthmonitor.LoginScreen
-import com.example.smarthealthmonitor.DashboardScreen
+import com.example.smarthealthmonitor.ui.screens.DashboardScreen
 import com.example.smarthealthmonitor.ui.screens.HistorialScreen
 import com.example.smarthealthmonitor.SmartHealthMonitorTheme
 @Composable
@@ -56,10 +56,6 @@ fun SmartHealthNavGraph() {
 
                 onHistorialClick = {
                     navController.navigate(Screen.Historial.route)
-                },
-
-                onAlertClick = {
-                    navController.navigate(Screen.Alerta.route)
                 }
             )
         }
